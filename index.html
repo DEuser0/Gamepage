@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tactics Chess</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== MENU ===================== -->
+<div id="menu-screen">
+  <div class="menu-card">
+    <span class="menu-badge">10×10 · TWO PLAYER · HOTSEAT</span>
+    <h1 class="menu-title">TACTICS<br>CHESS</h1>
+    <p class="menu-sub">A modern-warfare chess variant. Tanks, artillery, drones and ICBMs — tap a unit to see where it can move or strike, no coordinates required.</p>
+
+    <div class="menu-actions">
+      <button id="btn-new-game" class="btn btn-primary">New Game</button>
+      <button id="btn-show-load" class="btn">Upload Save</button>
+    </div>
+
+    <div id="load-panel" class="load-panel hidden">
+      <label for="save-text-input">Paste save code</label>
+      <textarea id="save-text-input" placeholder="TCX1-..."></textarea>
+      <div class="file-row">
+        <span>or</span>
+        <input type="file" id="save-file-input" accept=".txt">
+      </div>
+      <div class="load-error" id="load-error"></div>
+      <div class="actions">
+        <button id="btn-load-confirm" class="btn btn-primary">Load Game</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== GAME ===================== -->
+<div id="game-screen" class="hidden">
+  <div class="top-bar">
+    <h1 class="game-title stencil-title"><span class="t-w">TACTICS</span> <span class="t-b">CHESS</span></h1>
+    <span id="turn-pill" class="turn-pill side-white">White's turn</span>
+    <div class="spacer"></div>
+    <div class="top-bar-actions">
+      <button id="btn-save-game" class="btn">Save Game</button>
+      <button id="btn-back-to-menu" class="btn btn-ghost">Main Menu</button>
+    </div>
+  </div>
+
+  <div class="game-body">
+    <aside class="side-panel panel-white" aria-label="White stats">
+      <h2 class="panel-heading">White</h2>
+      <div class="panel-score" id="score-white">0</div>
+      <div class="panel-score-label">Score</div>
+      <div class="unit-count" id="count-white"></div>
+      <div class="panel-section-label">Ammunition</div>
+      <ul class="ammo-list" id="ammo-white"></ul>
+    </aside>
+
+    <section class="board-column">
+      <div class="board-wrap">
+        <div class="board-frame">
+          <div class="board-grid" id="board-grid" role="grid" aria-label="Game board"></div>
+        </div>
+      </div>
+      <div class="board-legend">
+        <span><i class="legend-swatch move"></i> Move</span>
+        <span><i class="legend-swatch attack"></i> Attack</span>
+        <span><i class="legend-swatch ability"></i> Ability</span>
+      </div>
+      <div class="action-bar" id="action-bar"></div>
+      <div class="log-panel" id="log-panel" aria-label="Battle log" aria-live="polite"></div>
+    </section>
+
+    <aside class="side-panel panel-black" aria-label="Black stats">
+      <h2 class="panel-heading">Black</h2>
+      <div class="panel-score" id="score-black">0</div>
+      <div class="panel-score-label">Score</div>
+      <div class="unit-count" id="count-black"></div>
+      <div class="panel-section-label">Ammunition</div>
+      <ul class="ammo-list" id="ammo-black"></ul>
+    </aside>
+  </div>
+</div>
+
+<!-- ===================== SAVE MODAL ===================== -->
+<div id="save-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <h2>Save Game</h2>
+    <p class="hint">Copy this code or download it as a file. Paste it back in on the menu screen's "Upload Save" panel to resume — it captures the board, ammo, and whose turn it is.</p>
+    <textarea id="save-output" readonly></textarea>
+    <div class="modal-actions">
+      <button id="btn-download-save" class="btn">Download .txt</button>
+      <button id="btn-copy-save" class="btn btn-primary">Copy Code</button>
+      <button id="save-modal-close" class="btn btn-ghost">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== WINNER MODAL ===================== -->
+<div id="winner-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="winner-banner">
+      <div class="win-side" id="winner-banner-side">White</div>
+      <div class="win-sub">wins — all enemy units destroyed.</div>
+    </div>
+    <div class="modal-actions">
+      <button id="winner-close" class="btn btn-ghost">Keep Viewing Board</button>
+      <button id="winner-menu" class="btn btn-primary">Main Menu</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>
+
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
